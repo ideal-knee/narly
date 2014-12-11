@@ -1,11 +1,11 @@
-;; UL: The User/Ultimate/Universal Language
+;; Narly
 
-(defvar *ul-macros* ())
+(defvar *narly-macros* ())
 
 (defun string-join (elements delimiter)
   (format nil (format nil "~~{~~a~~^~a~~}" delimiter) elements) )
 
-(defun ul-eval (form)
+(defun narly-eval (form)
   (cond
 
     ;; String literal
@@ -14,36 +14,36 @@
     ;; Symbol or numeric literal
     ((atom form) (format nil "~a" form))
 
-    ;; UL macro definition
+    ;; Macro definition
     ((eq (car form) '|define-macro|)
      (destructuring-bind (name &rest arguments-and-body) (cdr form)
-       (push `(,name . ,arguments-and-body) *ul-macros*) )
+       (push `(,name . ,arguments-and-body) *narly-macros*) )
      "" )
 
     ;; File include
     ((eq (car form) '|include|)
-     (ul (open (cadr form) :direction :input)) )
+     (narly (open (cadr form) :direction :input)) )
 
-    ;; UL macro call
-    ((assoc (car form) *ul-macros*)
+    ;; Macro call
+    ((assoc (car form) *narly-macros*)
      (destructuring-bind (arguments &rest body)
-         (cdr (assoc (car form) *ul-macros*))
-       (ul-eval (eval `(destructuring-bind ,arguments ',(cdr form)
+         (cdr (assoc (car form) *narly-macros*))
+       (narly-eval (eval `(destructuring-bind ,arguments ',(cdr form)
                          ,@body ))) ) )
 
-    ;; Naive UL function call
+    ;; Naive function call
     ;; ?? Default case--could hide errors...
     ;; ?? Only works for languages with C-like function call syntax
     (t (format nil "~a(~a)"
-               (ul-eval (car form))
-               (string-join (mapcar #'ul-eval (cdr form)) ", ") )) ) )
+               (narly-eval (car form))
+               (string-join (mapcar #'narly-eval (cdr form)) ", ") )) ) )
 
-(defun ul (&optional (in-stream *standard-input*))
+(defun narly (&optional (in-stream *standard-input*))
   (let ((*readtable* (copy-readtable nil)))
     (setf (readtable-case *readtable*) :preserve)
     (do ((form (read in-stream nil 'eof) (read in-stream nil 'eof)))
 	((eql form 'eof) "")
-      (format t "~a" (ul-eval form)) ) ) )
+      (format t "~a" (narly-eval form)) ) ) )
 
-(ul)
+(narly)
 
