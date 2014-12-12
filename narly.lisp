@@ -22,7 +22,7 @@
 
     ;; File include
     ((eq (car form) '|include|)
-     (narly (open (cadr form) :direction :input)) )
+     (narly (open (format nil "~a.n" (cadr form)) :direction :input)) )
 
     ;; Macro call
     ((assoc (car form) *narly-macros*)
