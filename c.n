@@ -3,3 +3,14 @@
 (define-macro c-include (file-basename)
   (INTERN (FORMAT NIL "#include \"~a.h\"~%" file-basename)) )
 
+(define-macro defn (typed-name typed-arguments &REST body)
+  (INTERN (FORMAT NIL
+                  "~a ~a(~a) {~%  ~a;~%}~%"
+                  (CAR typed-name)
+                  (CADR typed-name)
+                  (STRING-JOIN (MAPCAR #'(LAMBDA (typed-argument)
+                                           (FORMAT NIL "~a ~a" (CAR typed-argument) (CADR typed-argument)) )
+                                       typed-arguments )
+                               ", " )
+                  (STRING-JOIN (MAPCAR #'NARLY-EVAL body) ";~%  ") )) )
+
