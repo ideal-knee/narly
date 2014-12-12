@@ -1,0 +1,5 @@
+;; C core
+
+(define-macro c-include (file-basename)
+  (INTERN (FORMAT NIL "#include \"~a.h\"~%" file-basename)) )
+
