@@ -38,7 +38,7 @@
                (narly-eval (car form))
                (string-join (mapcar #'narly-eval (cdr form)) ", ") )) ) )
 
-(defun narly (&optional (in-stream *standard-input*))
+(defun narly (in-stream)
   (let ((*readtable* (copy-readtable nil)))
     (setf (readtable-case *readtable*) :preserve)
     (do ((form (read in-stream nil 'eof) (read in-stream nil 'eof)))
@@ -46,5 +46,4 @@
       (format t "~a" (narly-eval form)) ) ) )
 
 (narly (open "c.n"))
-(narly)
 
