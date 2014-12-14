@@ -14,3 +14,16 @@
                                ", " )
                   (STRING-JOIN (MAPCAR #'NARLY-EVAL body) ";~%  ") )) )
 
+(define-macro define-infix-operator (symbol)
+  `(define-macro ,symbol (&REST args)
+     (INTERN (FORMAT NIL "(~a)" (STRING-JOIN (MAPCAR #'NARLY-EVAL args) (FORMAT NIL "~a" ',symbol)))) ) )
+
+(define-infix-operator +)
+(define-infix-operator -)
+(define-infix-operator *)
+(define-infix-operator /)
+(define-infix-operator &&)
+(define-infix-operator ||)
+(define-infix-operator =)
+(define-infix-operator ==)
+
