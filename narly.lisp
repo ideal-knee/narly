@@ -18,15 +18,15 @@
          (substitute #\_ #\- form-string)
          form-string ) ) )
 
+    ;; File include
+    ((eq (car form) '|include|)
+     (narly (open (format nil "~a.n" (cadr form)) :direction :input)) )
+
     ;; Macro definition
     ((eq (car form) '|define-macro|)
      (destructuring-bind (name &rest arguments-and-body) (cdr form)
        (push `(,name . ,arguments-and-body) *narly-macros*) )
      "" )
-
-    ;; File include
-    ((eq (car form) '|include|)
-     (narly (open (format nil "~a.n" (cadr form)) :direction :input)) )
 
     ;; Macro call
     ((assoc (car form) *narly-macros*)
