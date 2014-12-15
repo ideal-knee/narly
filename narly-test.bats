@@ -10,6 +10,17 @@
     [ "$result" == "asdf" ]
 }
 
+@test "translates hyphens in symbol names to underscores" {
+    result="$(echo asdf-fdsa | sbcl --script cli.lisp)"
+    [ "$result" == "asdf_fdsa" ]
+}
+
+@test "doesn't translate subtraction operators to underscores" {
+    result="$(echo '(- asdf-fdsa fdsa-asdf)' | sbcl --script cli.lisp)"
+    echo $result
+    [ "$result" == "(asdf_fdsa-fdsa_asdf)" ]
+}
+
 @test "outputs numeric values verbatim" {
     result="$(echo 123.45 | sbcl --script cli.lisp)"
     [ "$result" == "123.45" ]

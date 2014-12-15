@@ -12,7 +12,11 @@
     ((stringp form) (format nil "\"~a\"" form))
 
     ;; Symbol or numeric literal
-    ((atom form) (format nil "~a" form))
+    ((atom form)
+     (let ((form-string (format nil "~a" form)))
+       (if (null (or (find #\( form-string) (find #\space form-string)))
+         (substitute #\_ #\- form-string)
+         form-string ) ) )
 
     ;; Macro definition
     ((eq (car form) '|define-macro|)
