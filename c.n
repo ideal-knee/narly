@@ -30,7 +30,6 @@
 (define-infix-operator /)
 (define-infix-operator &&)
 (define-infix-operator ||)
-(define-infix-operator =)
 (define-infix-operator ==)
 (define-infix-operator !=)
 (define-infix-operator <)
@@ -40,6 +39,9 @@
 
 (define-macro declare-var (typed-var)
   `(typed-name ,typed-var) )
+
+(define-macro set (&REST expressions)
+  (INTERN (STRING-JOIN (MAPCAR #'NARLY-EVAL expressions) " = ")))
 
 (define-macro while (test-expression &REST statements)
   `(chunks
