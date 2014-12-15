@@ -37,7 +37,7 @@
      (destructuring-bind (arguments &rest body)
          (cdr (assoc (car form) *narly-macros*))
        (narly-eval (eval `(destructuring-bind ,arguments ',(cdr form)
-                         ,@body ))) ) )
+                            ,@body ))) ) )
 
     ;; Naive function call
     ;; ?? Default case--could hide errors...
