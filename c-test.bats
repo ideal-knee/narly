@@ -20,3 +20,8 @@
     [ "$result" == "(1+2+(3/4))" ]
 }
 
+@test "allows variable declaration" {
+    result="$(echo '(declare-var (int count))' | sbcl --script cli.lisp)"
+    [ "$result" == "int count" ]
+}
+

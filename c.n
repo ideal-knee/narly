@@ -7,11 +7,12 @@
   (INTERN (FORMAT NIL
                   "~a ~a(~a) {~%  ~a;~%}~%"
                   (CAR typed-name)
-                  (CADR typed-name)
-                  (STRING-JOIN (MAPCAR #'(LAMBDA (typed-argument)
-                                           (FORMAT NIL "~a ~a" (CAR typed-argument) (CADR typed-argument)) )
-                                       typed-arguments )
-                               ", " )
+                  (NARLY-EVAL (CADR typed-name))
+                  (STRING-JOIN
+                   (MAPCAR #'(LAMBDA (typed-argument)
+                               (FORMAT NIL "~a ~a" (CAR typed-argument) (NARLY-EVAL (CADR typed-argument))) )
+                           typed-arguments )
+                   ", " )
                   (STRING-JOIN (MAPCAR #'NARLY-EVAL body) ";~%  ") )) )
 
 (define-macro define-infix-operator (symbol)
@@ -26,4 +27,7 @@
 (define-infix-operator ||)
 (define-infix-operator =)
 (define-infix-operator ==)
+
+(define-macro declare-var (typed-var)
+  (INTERN (FORMAT NIL "~a ~a" (CAR typed-var) (NARLY-EVAL (CADR typed-var)))) )
 
