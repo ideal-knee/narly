@@ -18,6 +18,10 @@
          (substitute #\_ #\- form-string)
          form-string ) ) )
 
+    ;; Piece together chunks of code
+    ((eq (car form) '|chunks|)
+     (string-join (mapcar #'narly-eval (cdr form)) " ") )
+
     ;; File include
     ((eq (car form) '|include|)
      (narly (open (format nil "~a.n" (cadr form)) :direction :input)) )

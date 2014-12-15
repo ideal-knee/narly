@@ -31,3 +31,7 @@
     [ "$result" == "foo(bar, baz, qux)" ]
 }
 
+@test "concatenates chunks of code delimited by whitespace" {
+    result="$(echo '(chunks foo (+ bar baz))' | sbcl --script cli.lisp)"
+    [ "$result" == "foo (bar+baz)" ]
+}
