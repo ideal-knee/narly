@@ -14,7 +14,7 @@
     ;; Symbol or numeric literal
     ((atom form)
      (let ((form-string (format nil "~a" form)))
-       (if (null (or (find #\( form-string) (find #\space form-string)))
+       (if (null (find #\( form-string))
          (substitute #\_ #\- form-string)
          form-string ) ) )
 
