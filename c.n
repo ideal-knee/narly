@@ -32,7 +32,18 @@
 (define-infix-operator ||)
 (define-infix-operator =)
 (define-infix-operator ==)
+(define-infix-operator !=)
+(define-infix-operator <)
+(define-infix-operator <=)
+(define-infix-operator >)
+(define-infix-operator >=)
 
 (define-macro declare-var (typed-var)
   `(typed-name ,typed-var) )
+
+(define-macro while (test-expression &REST statements)
+  `(chunks
+    while
+    |(| ,test-expression |)|
+    (body ,@statements) ) )
 

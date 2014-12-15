@@ -36,3 +36,9 @@
     [ "$result" == "int count" ]
 }
 
+@test "has while control structure" {
+    result="$(echo '(while (< foo bar) (baz foo))' | sbcl --script cli.lisp)"
+    echo $result
+    [ "$result" == $'while ( (foo<bar) ) {\n  baz(foo);\n}' ]
+}
+
