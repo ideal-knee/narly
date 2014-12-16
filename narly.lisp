@@ -5,6 +5,9 @@
 (defun string-join (elements delimiter)
   (format nil (format nil "~~{~~a~~^~a~~}" delimiter) elements) )
 
+(defun internf (&rest args)
+  (intern (apply #'format nil args)) )
+
 (defun narly-eval (form)
   (cond
 

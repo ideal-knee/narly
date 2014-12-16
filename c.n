@@ -1,28 +1,26 @@
 ;; C core
 
 (define-macro c-include (file-basename)
-  (INTERN (FORMAT NIL "#include \"~a.h\"~%" file-basename)) )
+  (INTERNF "#include \"~a.h\"~%" file-basename) )
 
 (define-macro typed-name (typed-name)
-  (INTERN (FORMAT NIL "~a ~a" (NARLY-EVAL (FIRST typed-name)) (NARLY-EVAL (SECOND typed-name)))) )
+  (INTERNF "~a ~a" (NARLY-EVAL (FIRST typed-name)) (NARLY-EVAL (SECOND typed-name))) )
 
 (define-macro body (&REST statements)
-  (INTERN (FORMAT NIL
-                  "{~%  ~a;~%}~%"
-                  (STRING-JOIN (MAPCAR #'NARLY-EVAL statements) ";~%  ") )) )
+  (INTERNF "{~%  ~a;~%}~%" (STRING-JOIN (MAPCAR #'NARLY-EVAL statements) ";~%  ")) )
 
 (define-macro defn (typed-name typed-arguments &REST statements)
   `(chunks
     (typed-name ,typed-name)
-    ,(INTERN (FORMAT NIL "(~a)" (STRING-JOIN (MAPCAR #'(LAMBDA (typed-argument)
-                                                         (NARLY-EVAL `(typed-name ,typed-argument)) )
-                                                     typed-arguments )
-                                             ", " )))
+    ,(INTERNF "(~a)" (STRING-JOIN (MAPCAR #'(LAMBDA (typed-argument)
+                                              (NARLY-EVAL `(typed-name ,typed-argument)) )
+                                          typed-arguments )
+                                  ", " ))
     (body ,@statements) ) )
 
 (define-macro define-infix-operator (symbol)
   `(define-macro ,symbol (&REST args)
-     (INTERN (FORMAT NIL "(~a)" (STRING-JOIN (MAPCAR #'NARLY-EVAL args) (FORMAT NIL "~a" ',symbol)))) ) )
+     (INTERNF "(~a)" (STRING-JOIN (MAPCAR #'NARLY-EVAL args) (FORMAT NIL "~a" ',symbol))) ) )
 
 (define-infix-operator +)
 (define-infix-operator -)
