@@ -1,0 +1,15 @@
+(c-include stdio)
+
+(defn (int main) ()
+  (declare-var (int fahr))
+  (declare-var (int celsius))
+  (set (declare-var (int lower))   0)
+  (set (declare-var (int upper)) 300)
+  (set (declare-var (int  step))  20)
+
+  (set fahr lower)
+  (while (<= fahr upper)
+    (set celsius (/ (* (- fahr 32) 5) 9))
+    (printf "%d\\t%d\\n" fahr celsius)
+    (set fahr (+ fahr step)) ) )
+

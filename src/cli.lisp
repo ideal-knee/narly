@@ -1,3 +1,3 @@
-(load "narly.lisp")
+(load "src/narly.lisp")
 (narly *standard-input*)
 

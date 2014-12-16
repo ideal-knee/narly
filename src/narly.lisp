@@ -56,5 +56,5 @@
 	((eql form 'eof) "")
       (format t "~a" (narly-eval form)) ) ) )
 
-(narly (open "c.n"))
+(narly (open "src/c.n"))
 
