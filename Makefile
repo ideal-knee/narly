@@ -13,3 +13,6 @@ temp-table :
 	cc gen/temp-table.c -o gen/temp-table
 	gen/temp-table
 
+test :
+	bats tests/*.bats
+

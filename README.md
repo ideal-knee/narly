@@ -22,7 +22,7 @@ have a preference of Common Lisp implementation, just use
 
 Requires [Bats](https://github.com/sstephenson/bats).
 
-    bats test/*.bats
+    bats tests/*.bats
 
 Why isn't this implemented in Clojure?
 --------------------------------------
