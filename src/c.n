@@ -47,3 +47,9 @@
     |(| ,test-expression |)|
     (body ,@statements) ) )
 
+(define-macro for (init-test-inc-expression &REST statements)
+  `(chunks
+    for
+    |(| ,(INTERN (STRING-JOIN (MAPCAR #'NARLY-EVAL init-test-inc-expression) "; ")) |)|
+    (body ,@statements) ) )
+
