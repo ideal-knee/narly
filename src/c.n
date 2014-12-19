@@ -1,26 +1,24 @@
 ;; C core
 
-(define-macro c-include (file-basename)
-  (INTERNF "#include \"~a.h\"~%" file-basename) )
+(define-narly-macro c-include (file-basename)
+  `(narly-render (:context "#include \"~a.h\"~%") ,file-basename) )
 
-(define-macro typed-name (typed-name)
-  (INTERNF "~a ~a" (NARLY-EVAL (FIRST typed-name)) (NARLY-EVAL (SECOND typed-name))) )
+(define-narly-macro typed-name (typed-name)
+  `(narly-render (:separator " ") ,@typed-name) )
 
-(define-macro body (&REST statements)
-  (INTERNF "{~%  ~a;~%}~%" (STRING-JOIN (MAPCAR #'NARLY-EVAL statements) ";~%  ")) )
+(define-narly-macro body (&REST statements)
+  `(narly-render (:context "{~%  ~a;~%}~%" :separator";~%  ") ,@statements) )
 
-(define-macro defn (typed-name typed-arguments &REST statements)
-  `(chunks
+(define-narly-macro defn (typed-name typed-arguments &REST statements)
+  `(narly-render (:separator " ")
     (typed-name ,typed-name)
-    ,(INTERNF "(~a)" (STRING-JOIN (MAPCAR #'(LAMBDA (typed-argument)
-                                              (NARLY-EVAL `(typed-name ,typed-argument)) )
-                                          typed-arguments )
-                                  ", " ))
+    (narly-render (:context "(~a)" :separator ", ")
+     ,@(MAPCAR #'(LAMBDA (typed-argument) `(typed-name ,typed-argument)) typed-arguments) )
     (body ,@statements) ) )
 
-(define-macro define-infix-operator (symbol)
-  `(define-macro ,symbol (&REST args)
-     (INTERNF "(~a)" (STRING-JOIN (MAPCAR #'NARLY-EVAL args) (FORMAT NIL "~a" ',symbol))) ) )
+(define-narly-macro define-infix-operator (symbol)
+  `(define-narly-macro ,symbol (&REST args)
+     `(narly-render (:context "(~a)" :separator ,',(FORMAT NIL "~a" symbol)) ,@args) ) )
 
 (define-infix-operator +)
 (define-infix-operator -)
@@ -35,21 +33,21 @@
 (define-infix-operator >)
 (define-infix-operator >=)
 
-(define-macro declare-var (typed-var)
+(define-narly-macro declare-var (typed-var)
   `(typed-name ,typed-var) )
 
-(define-macro set (&REST expressions)
-  (INTERN (STRING-JOIN (MAPCAR #'NARLY-EVAL expressions) " = ")))
+(define-narly-macro set (&REST expressions)
+  `(narly-render (:separator " = ") ,@expressions) )
 
-(define-macro while (test-expression &REST statements)
-  `(chunks
+(define-narly-macro while (test-expression &REST statements)
+  `(narly-render (:separator " ")
     while
-    |(| ,test-expression |)|
+    (narly-render (:context "(~a)") ,test-expression)
     (body ,@statements) ) )
 
-(define-macro for (init-test-inc-expression &REST statements)
-  `(chunks
+(define-narly-macro for (init-test-inc-expression &REST statements)
+  `(narly-render (:separator " ")
     for
-    |(| ,(INTERN (STRING-JOIN (MAPCAR #'NARLY-EVAL init-test-inc-expression) "; ")) |)|
+    (narly-render (:context "(~a)" :separator "; ") ,@init-test-inc-expression)
     (body ,@statements) ) )
 

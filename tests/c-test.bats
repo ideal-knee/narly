@@ -42,11 +42,12 @@
 
 @test "has while control structure" {
     result="$(echo '(while (< foo bar) (baz foo))' | sbcl --script src/cli.lisp)"
-    [ "$result" == $'while ( (foo<bar) ) {\n  baz(foo);\n}' ]
+    [ "$result" == $'while ((foo<bar)) {\n  baz(foo);\n}' ]
 }
 
 @test "has for control structure" {
     result="$(echo '(for ((set i 0) (< i 10) (set i (+ i 1))) (foo i))' | sbcl --script src/cli.lisp)"
-    [ "$result" == $'for ( i = 0; (i<10); i = (i+1) ) {\n  foo(i);\n}' ]
+    echo $result
+    [ "$result" == $'for (i = 0; (i<10); i = (i+1)) {\n  foo(i);\n}' ]
 }
 

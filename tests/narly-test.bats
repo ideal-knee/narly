@@ -17,7 +17,6 @@
 
 @test "doesn't translate subtraction operators to underscores" {
     result="$(echo '(- asdf-fdsa fdsa-asdf)' | sbcl --script src/cli.lisp)"
-    echo $result
     [ "$result" == "(asdf_fdsa-fdsa_asdf)" ]
 }
 
@@ -31,7 +30,15 @@
     [ "$result" == "foo(bar, baz, qux)" ]
 }
 
-@test "concatenates chunks of code delimited by whitespace" {
-    result="$(echo '(chunks foo (+ bar baz))' | sbcl --script src/cli.lisp)"
-    [ "$result" == "foo (bar+baz)" ]
+@test "renders forms with default context and separator" {
+    result="$(echo '(narly-render () (foo bar) (baz qux))' | sbcl --script src/cli.lisp)"
+    echo $result
+    [ "$result" == "foo(bar)baz(qux)" ]
 }
+
+@test "renders forms with specified context and separator" {
+    result="$(echo '(narly-render (:context "{~a}" :separator "; ") (foo bar) (baz qux))' | sbcl --script src/cli.lisp)"
+    echo $result
+    [ "$result" == "{foo(bar); baz(qux)}" ]
+}
+

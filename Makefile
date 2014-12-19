@@ -16,3 +16,5 @@ temp-table :
 test :
 	bats tests/*.bats
 
+clean :
+	rm gen/*

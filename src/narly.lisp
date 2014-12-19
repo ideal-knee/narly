@@ -5,9 +5,6 @@
 (defun string-join (elements delimiter)
   (format nil (format nil "~~{~~a~~^~a~~}" delimiter) elements) )
 
-(defun internf (&rest args)
-  (intern (apply #'format nil args)) )
-
 (defun narly-eval (form)
   (cond
 
@@ -21,16 +18,17 @@
          (substitute #\_ #\- form-string)
          form-string ) ) )
 
-    ;; Piece together chunks of code
-    ((eq (car form) '|chunks|)
-     (string-join (mapcar #'narly-eval (cdr form)) " ") )
+    ;; Render code
+    ((eq (first form) '|narly-render|)
+     (destructuring-bind (&key (|context| "~a") (|separator| "")) (second form)
+       (format nil |context| (string-join (mapcar #'narly-eval (subseq form 2)) |separator|)) ) )
 
     ;; File include
-    ((eq (car form) '|include|)
+    ((eq (car form) '|narly-include|)
      (narly (open (format nil "~a.n" (cadr form)) :direction :input)) )
 
     ;; Macro definition
-    ((eq (car form) '|define-macro|)
+    ((eq (car form) '|define-narly-macro|)
      (destructuring-bind (name &rest arguments-and-body) (cdr form)
        (push `(,name . ,arguments-and-body) *narly-macros*) )
      "" )
