@@ -24,28 +24,28 @@
        (format nil |context| (string-join (mapcar #'narly-eval (subseq form 2)) |separator|)) ) )
 
     ;; File include
-    ((eq (car form) '|narly-include|)
-     (narly (open (format nil "~a.n" (cadr form)) :direction :input)) )
+    ((eq (first form) '|narly-include|)
+     (narly (open (format nil "~a.n" (second form)) :direction :input)) )
 
     ;; Macro definition
-    ((eq (car form) '|define-narly-macro|)
-     (destructuring-bind (name &rest arguments-and-body) (cdr form)
+    ((eq (first form) '|define-narly-macro|)
+     (destructuring-bind (name &rest arguments-and-body) (rest form)
        (push `(,name . ,arguments-and-body) *narly-macros*) )
      "" )
 
     ;; Macro call
-    ((assoc (car form) *narly-macros*)
+    ((assoc (first form) *narly-macros*)
      (destructuring-bind (arguments &rest body)
-         (cdr (assoc (car form) *narly-macros*))
-       (narly-eval (eval `(destructuring-bind ,arguments ',(cdr form)
+         (rest (assoc (first form) *narly-macros*))
+       (narly-eval (eval `(destructuring-bind ,arguments ',(rest form)
                             ,@body ))) ) )
 
     ;; Naive function call
     ;; ?? Default case--could hide errors...
     ;; ?? Only works for languages with C-like function call syntax
     (t (format nil "~a(~a)"
-               (narly-eval (car form))
-               (string-join (mapcar #'narly-eval (cdr form)) ", ") )) ) )
+               (narly-eval (first form))
+               (string-join (mapcar #'narly-eval (rest form)) ", ") )) ) )
 
 (defun narly (in-stream)
   (let ((*readtable* (copy-readtable nil)))
