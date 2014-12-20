@@ -35,9 +35,14 @@
     [ "$result" == "int count" ]
 }
 
+@test "allows variable declaration with initial value" {
+    result="$(echo '(declare-var (int count) 0)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "int count = 0" ]
+}
+
 @test "allows variable assignment" {
     result="$(echo '(set count 0)' | sbcl --script src/cli.lisp)"
-    [ "$result" == "count = 0" ]
+    [ "$result" == "(count = 0)" ]
 }
 
 @test "has while control structure" {
@@ -47,12 +52,11 @@
 
 @test "has for control structure" {
     result="$(echo '(for ((set i 0) (< i 10) (set i (+ i 1))) (foo i))' | sbcl --script src/cli.lisp)"
-    [ "$result" == $'for (i = 0; (i<10); i = (i+1)) {\n  foo(i);\n}' ]
+    [ "$result" == $'for ((i = 0); (i<10); (i = (i+1))) {\n  foo(i);\n}' ]
 }
 
 @test "allows symbolic constants" {
     result="$(echo '(def count 0)' | sbcl --script src/cli.lisp)"
-    echo $result
     [ "$result" == $'#define count 0' ]
 }
 

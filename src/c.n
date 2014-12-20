@@ -33,11 +33,13 @@
 (define-infix-operator >)
 (define-infix-operator >=)
 
-(define-narly-macro declare-var (typed-var)
-  `(typed-name ,typed-var) )
+(define-narly-macro declare-var (typed-var &OPTIONAL initial-value)
+  (IF initial-value
+    `(narly-render (:separator " = ") (typed-name ,typed-var) ,initial-value)
+    `(typed-name ,typed-var) ) )
 
 (define-narly-macro set (&REST expressions)
-  `(narly-render (:separator " = ") ,@expressions) )
+  `(narly-render (:context "(~a)" :separator " = ") ,@expressions) )
 
 (define-narly-macro while (test-expression &REST statements)
   `(narly-render (:separator " ")
