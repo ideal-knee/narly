@@ -1,0 +1,10 @@
+;; Pipe standard in to standard out
+
+(c-include stdio)
+
+(defn (int main) ()
+  (declare-var (int c))
+
+  (while (!= (set c (getchar)) EOF)
+    (putchar c) ) )
+
