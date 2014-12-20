@@ -53,6 +53,6 @@
 @test "allows symbolic constants" {
     result="$(echo '(def count 0)' | sbcl --script src/cli.lisp)"
     echo $result
-    [ "$result" == "#define count 0" ]
+    [ "$result" == $'#define count 0' ]
 }
 

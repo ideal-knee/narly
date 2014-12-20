@@ -52,5 +52,5 @@
     (body ,@statements) ) )
 
 (define-narly-macro def (name value)
-  `(narly-render (:separator " ") |#define| ,name ,value) )
+  `(narly-render (:context "~a~%" :separator " ") |#define| ,name ,value) )
 
