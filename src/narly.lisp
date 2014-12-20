@@ -1,5 +1,8 @@
 ;; Narly
 
+(defvar *narly-readtable* (copy-readtable nil))
+(setf (readtable-case *narly-readtable*) :preserve)
+
 (defvar *narly-macros* ())
 
 (defun string-join (elements delimiter)
@@ -48,8 +51,7 @@
                (string-join (mapcar #'narly-eval (rest form)) ", ") )) ) )
 
 (defun narly (in-stream)
-  (let ((*readtable* (copy-readtable nil)))
-    (setf (readtable-case *readtable*) :preserve)
+  (let ((*readtable* *narly-readtable*))
     (do ((form (read in-stream nil 'eof) (read in-stream nil 'eof)))
 	((eql form 'eof) "")
       (format t "~a" (narly-eval form)) ) ) )
