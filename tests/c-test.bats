@@ -47,7 +47,12 @@
 
 @test "has for control structure" {
     result="$(echo '(for ((set i 0) (< i 10) (set i (+ i 1))) (foo i))' | sbcl --script src/cli.lisp)"
-    echo $result
     [ "$result" == $'for (i = 0; (i<10); i = (i+1)) {\n  foo(i);\n}' ]
+}
+
+@test "allows symbolic constants" {
+    result="$(echo '(def count 0)' | sbcl --script src/cli.lisp)"
+    echo $result
+    [ "$result" == "#define count 0" ]
 }
 

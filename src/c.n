@@ -51,3 +51,6 @@
     (narly-render (:context "(~a)" :separator "; ") ,@init-test-inc-expression)
     (body ,@statements) ) )
 
+(define-narly-macro def (name value)
+  `(narly-render (:separator " ") |#define| ,name ,value) )
+
