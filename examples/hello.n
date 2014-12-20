@@ -1,3 +1,5 @@
+;; hello world
+
 (c-include stdio)
 
 (defn (int main) ((int argc) (char** argv))

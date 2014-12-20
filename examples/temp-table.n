@@ -1,3 +1,5 @@
+;; Print temperature conversion table
+
 (c-include stdio)
 
 (def lower   0)
