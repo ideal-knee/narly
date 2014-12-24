@@ -11,6 +11,12 @@
 (defun narly-eval (form)
   (cond
 
+    ;; Character literal
+    ((characterp form)
+     (if (char= form #\Newline)
+         "'\\n'"
+         (format nil "'~a'" form) ) )
+
     ;; String literal
     ((stringp form) (format nil "\"~a\"" form))
 

@@ -80,11 +80,6 @@
     [ "$result" == $'(count)--' ]
 }
 
-@test "allows character literals" {
-    result="$(echo '(chr \\n)' | sbcl --script src/cli.lisp)"
-    [ "$result" == "'\n'" ]
-}
-
 @test "supports and operator" {
     result="$(echo '(and a b)' | sbcl --script src/cli.lisp)"
     [ "$result" == "(a&&b)" ]

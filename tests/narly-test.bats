@@ -32,13 +32,26 @@
 
 @test "renders forms with default context and separator" {
     result="$(echo '(narly-render () (foo bar) (baz qux))' | sbcl --script src/cli.lisp)"
-    echo $result
     [ "$result" == "foo(bar)baz(qux)" ]
 }
 
 @test "renders forms with specified context and separator" {
     result="$(echo '(narly-render (:context "{~a}" :separator "; ") (foo bar) (baz qux))' | sbcl --script src/cli.lisp)"
-    echo $result
     [ "$result" == "{foo(bar); baz(qux)}" ]
+}
+
+@test "supports Common Lisp character literals" {
+    result="$(echo '#\a' | sbcl --script src/cli.lisp)"
+    [ "$result" == "'a'" ]
+}
+
+@test "supports space character literal" {
+    result="$(echo '#\Space' | sbcl --script src/cli.lisp)"
+    [ "$result" == "' '" ]
+}
+
+@test "supports newline character literal" {
+    result="$(echo '#\Newline' | sbcl --script src/cli.lisp)"
+    [ "$result" == "'\n'" ]
 }
 
