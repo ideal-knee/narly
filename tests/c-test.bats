@@ -72,13 +72,16 @@
 
 @test "allows prefix decrement operator" {
     result="$(echo '(dec count)' | sbcl --script src/cli.lisp)"
-    echo $result
     [ "$result" == $'--(count)' ]
 }
 
 @test "allows postfix decrement operator" {
     result="$(echo '(dec-after count)' | sbcl --script src/cli.lisp)"
-    echo $result
     [ "$result" == $'(count)--' ]
+}
+
+@test "allows character literals" {
+    result="$(echo '(chr \\n)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "'\n'" ]
 }
 

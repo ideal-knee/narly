@@ -68,3 +68,6 @@
 (define-narly-macro dec-after (name)
   `(narly-render (:context "(~a)--") ,name) )
 
+(define-narly-macro chr (c)
+  `(narly-render (:context "'~a'") ,c) )
+
