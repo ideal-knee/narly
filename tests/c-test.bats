@@ -85,3 +85,13 @@
     [ "$result" == "'\n'" ]
 }
 
+@test "supports and operator" {
+    result="$(echo '(and a b)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "(a&&b)" ]
+}
+
+@test "supports or operator" {
+    result="$(echo '(or a b)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "(a||b)" ]
+}
+
