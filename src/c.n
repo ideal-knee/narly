@@ -56,3 +56,15 @@
 (define-narly-macro def (name value)
   `(narly-render (:context "~a~%" :separator " ") |#define| ,name ,value) )
 
+(define-narly-macro inc (name)
+  `(narly-render (:context "++(~a)") ,name) )
+
+(define-narly-macro inc-after (name)
+  `(narly-render (:context "(~a)++") ,name) )
+
+(define-narly-macro dec (name)
+  `(narly-render (:context "--(~a)") ,name) )
+
+(define-narly-macro dec-after (name)
+  `(narly-render (:context "(~a)--") ,name) )
+

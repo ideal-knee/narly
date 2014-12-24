@@ -60,3 +60,25 @@
     [ "$result" == $'#define count 0' ]
 }
 
+@test "allows prefix increment operator" {
+    result="$(echo '(inc count)' | sbcl --script src/cli.lisp)"
+    [ "$result" == $'++(count)' ]
+}
+
+@test "allows postfix increment operator" {
+    result="$(echo '(inc-after count)' | sbcl --script src/cli.lisp)"
+    [ "$result" == $'(count)++' ]
+}
+
+@test "allows prefix decrement operator" {
+    result="$(echo '(dec count)' | sbcl --script src/cli.lisp)"
+    echo $result
+    [ "$result" == $'--(count)' ]
+}
+
+@test "allows postfix decrement operator" {
+    result="$(echo '(dec-after count)' | sbcl --script src/cli.lisp)"
+    echo $result
+    [ "$result" == $'(count)--' ]
+}
+
