@@ -90,3 +90,18 @@
     [ "$result" == "(a||b)" ]
 }
 
+@test "supports when" {
+    result="$(echo '(when foo (bar baz) (qux quux))' | sbcl --script src/cli.lisp)"
+    [ "$result" == $'if (foo) {\n  bar(baz);\n  qux(quux);\n}' ]
+}
+
+@test "supports cond with one clauses" {
+    result="$(echo '(cond (foo (bar baz)))' | sbcl --script src/cli.lisp)"
+    [ "$result" == $'if (foo) {\n  bar(baz);\n}' ]
+}
+
+@test "supports cond with two clauses" {
+    result="$(echo '(cond (foo (bar baz) (corge)) (qux (bar quux)))' | sbcl --script src/cli.lisp)"
+    [ "$result" == $'if (foo) {\n  bar(baz);\n  corge();\n}\nelse if (qux) {\n  bar(quux);\n}' ]
+}
+

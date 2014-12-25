@@ -72,3 +72,13 @@
 (define-narly-macro or (&REST args)
   `(narly-render (:context "(~a)" :separator "||") ,@args) )
 
+(define-narly-macro when (test &REST statements)
+  `(narly-render (:separator " ")
+    if
+    (narly-render (:context "(~a)") ,test)
+    (body ,@statements) ) )
+
+(define-narly-macro cond (&REST clauses)
+  `(narly-render (:separator "else ")
+    ,@(MAPCAR #'(LAMBDA (clause) `(when ,@clause)) clauses) ) )
+
