@@ -1,0 +1,29 @@
+;; An implementation of the Unix program wc
+
+(define-narly-macro declare-ints (&REST names)
+  `(narly-render (:separator ";~%") ,@(MAPCAR #'(LAMBDA (name) `(declare-var (int ,name))) names)) )
+
+(c-include stdio)
+
+(def in-word 1)
+(def out-of-word 0)
+
+(defn (int main) ()
+  (declare-ints c nl nw nc state)
+
+  (set state out-of-word)
+  (set nl nw nc 0)
+
+  (while (!= (set c (getchar)) EOF)
+    (inc nc)
+
+    (when (== c #\Newline)
+      (inc nl) )
+
+    (cond ((or (== c #\Space) (== c #\Newline) (== c #\Tab))
+           (set state out-of-word) )
+          ((== state out-of-word)
+           (set state in-word)
+           (inc nw) ) ) )
+
+    (printf "%d %d %d\\n" nl nw nc) )

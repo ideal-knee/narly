@@ -21,3 +21,10 @@
     [ "$result" == 'I can pipe stuff!' ]
 }
 
+@test "builds wc correctly" {
+    cat examples/wc.n | sbcl --script src/cli.lisp > gen/wc.c
+    cc gen/wc.c -o gen/wc
+    result="$(echo $'hello world\ngoodbye c' | gen/wc)"
+    [ "$result" == "2 4 22" ]
+}
+
