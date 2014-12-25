@@ -80,5 +80,9 @@
 
 (define-narly-macro cond (&REST clauses)
   `(narly-render (:separator "else ")
-    ,@(MAPCAR #'(LAMBDA (clause) `(when ,@clause)) clauses) ) )
+    ,@(MAPCAR #'(LAMBDA (clause)
+                  (IF (EQ (FIRST clause) :else)
+                    `(body ,@(REST clause))
+                    `(when ,@clause) ) )
+              clauses ) ) )
 

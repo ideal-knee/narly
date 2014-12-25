@@ -105,3 +105,8 @@
     [ "$result" == $'if (foo) {\n  bar(baz);\n  corge();\n}\nelse if (qux) {\n  bar(quux);\n}' ]
 }
 
+@test "supports cond with else clause" {
+    result="$(echo '(cond (foo (bar baz)) (:else (bar quux)))' | sbcl --script src/cli.lisp)"
+    [ "$result" == $'if (foo) {\n  bar(baz);\n}\nelse {\n  bar(quux);\n}' ]
+}
+
