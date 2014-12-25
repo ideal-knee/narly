@@ -17,7 +17,7 @@
 
 @test "doesn't translate subtraction operators to underscores" {
     result="$(echo '(- asdf-fdsa fdsa-asdf)' | sbcl --script src/cli.lisp)"
-    [ "$result" == "(asdf_fdsa-fdsa_asdf)" ]
+    [ "$result" == "(asdf_fdsa)-(fdsa_asdf)" ]
 }
 
 @test "outputs numeric values verbatim" {
