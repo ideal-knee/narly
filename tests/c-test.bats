@@ -119,3 +119,8 @@
     result="$(echo '(cond (foo (bar baz)) (:else (bar quux)))' | sbcl --script src/cli.lisp)"
     [ "$result" == $'if (foo) {\n  bar(baz);\n}\nelse {\n  bar(quux);\n}' ]
 }
+
+@test "support array reference" {
+    result="$(echo '(aref foo 12)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "foo[12]" ]
+}

@@ -94,3 +94,8 @@
                                                           `(body ,@(REST clause))
                                                           `(when ,@clause) )))
      ,@clauses ) )
+
+(define-narly-macro aref (name index)
+  `(narly-render ()
+    ,name
+    (narly-render (:context "[~a]") ,index) ) )
