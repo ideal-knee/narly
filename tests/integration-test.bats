@@ -27,3 +27,10 @@
     result="$(echo $'hello world\ngoodbye c' | gen/wc)"
     [ "$result" == "2 4 22" ]
 }
+
+@test "builds character counter correctly" {
+    cat examples/character-counter.n | sbcl --script src/cli.lisp > gen/character-counter.c
+    cc gen/character-counter.c -o gen/character-counter
+    result="$(echo $'a b c d e 0 1 2 0' | gen/character-counter)"
+    [ "$result" == "digits = 2 1 1 0 0 0 0 0 0 0, white space = 9, other = 5" ]
+}

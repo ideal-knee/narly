@@ -1,0 +1,24 @@
+;; Character type counter
+
+(define-narly-macro declare-ints (&REST names)
+  `(narly-render (:separator ";~%" :mapping ((name) `(declare-var (int ,name)))) ,@names) )
+
+(c-include stdio)
+
+(defn (int main) ()
+  (declare-ints c i nwhite nother)
+  (declare-var (int ndigit) :length 10 :init (0 0 0 0 0 0 0 0 0 0))
+  (set nwhite nother 0)
+
+  (while (!= (set c (getchar)) EOF)
+    (cond ((and (>= c #\0) (<= c #\9))
+           (inc (aref ndigit (- c #\0))) )
+          ((or (== c #\Space) (== c #\Newline) (== c #\Tab))
+           (inc nwhite) )
+          (:else
+           (inc nother) ) ) )
+
+  (printf "digits =")
+  (for ((set i 0) (< i 10) (inc i))
+    (printf " %d" (aref ndigit i)) )
+  (printf ", white space = %d, other = %d\\n" nwhite nother) )
