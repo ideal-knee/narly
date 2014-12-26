@@ -12,8 +12,8 @@
 (define-narly-macro defn (typed-name typed-arguments &REST statements)
   `(narly-render (:separator " ")
     (typed-name ,typed-name)
-    (narly-render (:context "(~a)" :separator ", ")
-     ,@(MAPCAR #'(LAMBDA (typed-argument) `(typed-name ,typed-argument)) typed-arguments) )
+    (narly-render (:context "(~a)" :separator ", " :mapping ((typed-argument) `(typed-name ,typed-argument)))
+     ,@typed-arguments )
     (body ,@statements) ) )
 
 (define-narly-macro define-infix-operator (symbol)
@@ -79,10 +79,7 @@
     (body ,@statements) ) )
 
 (define-narly-macro cond (&REST clauses)
-  `(narly-render (:separator "else ")
-    ,@(MAPCAR #'(LAMBDA (clause)
-                  (IF (EQ (FIRST clause) :else)
-                    `(body ,@(REST clause))
-                    `(when ,@clause) ) )
-              clauses ) ) )
-
+  `(narly-render (:separator "else " :mapping ((clause) (IF (EQ (FIRST clause) :else)
+                                                            `(body ,@(REST clause))
+                                                            `(when ,@clause) )))
+     ,@clauses ) )

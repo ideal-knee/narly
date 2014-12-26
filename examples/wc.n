@@ -1,7 +1,7 @@
 ;; An implementation of the Unix program wc
 
 (define-narly-macro declare-ints (&REST names)
-  `(narly-render (:separator ";~%") ,@(MAPCAR #'(LAMBDA (name) `(declare-var (int ,name))) names)) )
+  `(narly-render (:separator ";~%" :mapping ((name) `(declare-var (int ,name)))) ,@names) )
 
 (c-include stdio)
 

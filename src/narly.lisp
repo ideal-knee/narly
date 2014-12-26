@@ -29,8 +29,10 @@
 
     ;; Render code
     ((eq (first form) '|narly-render|)
-     (destructuring-bind (&key (|context| "~a") (|separator| "")) (second form)
-       (format nil |context| (string-join (mapcar #'narly-eval (subseq form 2)) |separator|)) ) )
+     (destructuring-bind (&key (|context| "~a") (|separator| "") (|mapping| '((e) e))) (second form)
+       (format nil |context| (string-join (mapcar #'narly-eval
+                                                  (mapcar (eval `(function (lambda ,@|mapping|))) (subseq form 2)) )
+                                          |separator| )) ) )
 
     ;; File include
     ((eq (first form) '|narly-include|)
