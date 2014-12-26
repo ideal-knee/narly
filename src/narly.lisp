@@ -13,9 +13,9 @@
 
     ;; Character literal
     ((characterp form)
-     (if (char= form #\Newline)
-         "'\\n'"
-         (format nil "'~a'" form) ) )
+     (cond ((char= form #\Newline) "'\\n'")
+           ((char= form #\Tab) "'\\t'")
+           (t (format nil "'~a'" form)) ) )
 
     ;; String literal
     ((stringp form) (format nil "\"~a\"" form))

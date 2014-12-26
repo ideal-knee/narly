@@ -54,3 +54,8 @@
     result="$(echo '#\Newline' | sbcl --script src/cli.lisp)"
     [ "$result" == "'\n'" ]
 }
+
+@test "supports tab character literal" {
+    result="$(echo '#\Tab' | sbcl --script src/cli.lisp)"
+    [ "$result" == "'\t'" ]
+}
