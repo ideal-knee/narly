@@ -80,6 +80,6 @@
 
 (define-narly-macro cond (&REST clauses)
   `(narly-render (:separator "else " :mapping ((clause) (IF (EQ (FIRST clause) :else)
-                                                            `(body ,@(REST clause))
-                                                            `(when ,@clause) )))
+                                                          `(body ,@(REST clause))
+                                                          `(when ,@clause) )))
      ,@clauses ) )
