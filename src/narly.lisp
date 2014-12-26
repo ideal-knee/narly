@@ -65,4 +65,3 @@
       (format t "~a" (narly-eval form)) ) ) )
 
 (narly (open "src/c.n"))
-
