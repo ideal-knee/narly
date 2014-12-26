@@ -7,4 +7,3 @@
 
   (while (!= (set c (getchar)) EOF)
     (putchar c) ) )
-

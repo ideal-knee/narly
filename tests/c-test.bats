@@ -109,4 +109,3 @@
     result="$(echo '(cond (foo (bar baz)) (:else (bar quux)))' | sbcl --script src/cli.lisp)"
     [ "$result" == $'if (foo) {\n  bar(baz);\n}\nelse {\n  bar(quux);\n}' ]
 }
-

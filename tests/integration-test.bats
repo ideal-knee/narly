@@ -27,4 +27,3 @@
     result="$(echo $'hello world\ngoodbye c' | gen/wc)"
     [ "$result" == "2 4 22" ]
 }
-

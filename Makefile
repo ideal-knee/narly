@@ -13,4 +13,3 @@ test :
 
 clean :
 	rm gen/*
-

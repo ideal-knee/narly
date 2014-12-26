@@ -54,4 +54,3 @@
     result="$(echo '#\Newline' | sbcl --script src/cli.lisp)"
     [ "$result" == "'\n'" ]
 }
-
