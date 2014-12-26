@@ -36,8 +36,18 @@
 }
 
 @test "allows variable declaration with initial value" {
-    result="$(echo '(declare-var (int count) 0)' | sbcl --script src/cli.lisp)"
+    result="$(echo '(declare-var (int count) :init 0)' | sbcl --script src/cli.lisp)"
     [ "$result" == "int count = 0" ]
+}
+
+@test "allows array declaration" {
+    result="$(echo '(declare-var (int count) :length 5)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "int count[5]" ]
+}
+
+@test "allows array declaration with initial value" {
+    result="$(echo '(declare-var (int count) :length 5 :init (1 2 3 4 5))' | sbcl --script src/cli.lisp)"
+    [ "$result" == "int count[5] = {1, 2, 3, 4, 5}" ]
 }
 
 @test "allows variable assignment" {

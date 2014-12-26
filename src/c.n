@@ -31,10 +31,21 @@
 (define-infix-operator >)
 (define-infix-operator >=)
 
-(define-narly-macro declare-var (typed-var &OPTIONAL initial-value)
-  (IF initial-value
-    `(narly-render (:separator " = ") (typed-name ,typed-var) ,initial-value)
-    `(typed-name ,typed-var) ) )
+(define-narly-macro declare-var (typed-var &KEY |init| |length|)
+  (COND ((AND |length| |init|)
+         `(narly-render (:separator " = ")
+           (narly-render ()
+             (typed-name ,typed-var)
+             (narly-render (:context "[~a]") ,|length|) )
+           (narly-render (:context "{~a}" :separator ", ") ,@|init|) ) )
+        (|init|
+         `(narly-render (:separator " = ") (typed-name ,typed-var) ,|init|) )
+        (|length|
+         `(narly-render ()
+           (typed-name ,typed-var)
+           (narly-render (:context "[~a]") ,|length|) ) )
+        (T
+         `(typed-name ,typed-var) ) ) )
 
 (define-narly-macro set (&REST expressions)
   `(narly-render (:context "~a" :separator " = ") ,@expressions) )
