@@ -1,0 +1,49 @@
+;; Scan through a file then print the longest line
+
+(c-include stdio)
+
+(def max-line 1000)
+
+(declare-fn (int my-getline) ((char* line) (int maxline)))
+(declare-fn (void copy) ((char* to) (char* from)))
+
+(defn (int main) ()
+  (declare-var (int len))
+  (declare-var (int max) :init 0)
+  (declare-var (char    line) :length max-line)
+  (declare-var (char longest) :length max-line)
+
+  (while (> (set len (my-getline line max-line)) 0)
+    (when (> len max)
+      (set max len)
+      (copy longest line) ) )
+
+  (when (> max 0)
+    (printf "%s\\n" longest) )
+
+  (return 0) )
+
+(defn (int my-getline) ((char* line) (int maxline))
+  (declare-var (int c))
+  (declare-var (int i))
+
+  (for ((set i 0)
+        (and (< i (- maxline 1))
+             (!= (set c (getchar)) EOF)
+             (!= c #\Newline) )
+        (inc i) )
+    (set (aref line i) c) )
+
+  (when (== c #\Newline)
+    (set (aref line i) c)
+    (inc i) )
+
+  (set (aref line i) 0)
+
+  (return i) )
+
+(defn (void copy) ((char* to) (char* from))
+  (declare-var (int i) :init 0)
+
+  (while (!= (set (aref to i) (aref from i)) 0)
+    (inc i) ) )
