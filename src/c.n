@@ -9,8 +9,14 @@
 (define-narly-macro body (&REST statements)
   `(narly-render (:context "{~%  ~a;~%}~%" :separator";~%  ") ,@statements) )
 
+(define-narly-macro declare-fn (typed-name typed-arguments)
+  `(narly-render (:context "~a;~%")
+    (typed-name ,typed-name)
+    (narly-render (:context "(~a)" :separator ", " :mapping ((typed-argument) `(typed-name ,typed-argument)))
+     ,@typed-arguments ) ) )
+
 (define-narly-macro defn (typed-name typed-arguments &REST statements)
-  `(narly-render (:separator " ")
+  `(narly-render ()
     (typed-name ,typed-name)
     (narly-render (:context "(~a)" :separator ", " :mapping ((typed-argument) `(typed-name ,typed-argument)))
      ,@typed-arguments )

@@ -15,9 +15,14 @@
     [ "$result" == $'{\n  foo(bar);\n  qux(bar, baz);\n}' ]
 }
 
+@test "declares functions" {
+    result="$(echo '(declare-fn (int foo) ((int bar) (char** baz)))' | sbcl --script src/cli.lisp)"
+    [ "$result" == "int foo(int bar, char** baz);" ]
+}
+
 @test "defines functions" {
     result="$(echo '(defn (int foo) ((int bar) (char** baz)) (qux bar baz) (quux bar))' | sbcl --script src/cli.lisp)"
-    [ "$result" == $'int foo (int bar, char** baz) {\n  qux(bar, baz);\n  quux(bar);\n}' ]
+    [ "$result" == $'int foo(int bar, char** baz){\n  qux(bar, baz);\n  quux(bar);\n}' ]
 }
 
 @test "supports infix operators" {
