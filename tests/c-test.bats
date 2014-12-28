@@ -50,6 +50,11 @@
     [ "$result" == "int count[5]" ]
 }
 
+@test "allows external variable declaration" {
+    result="$(echo '(declare-var (int count) :external? true)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "extern int count" ]
+}
+
 @test "allows global variable declaration" {
     result="$(echo '(declare-global-var (int count))' | sbcl --script src/cli.lisp)"
     [ "$result" == "int count;" ]

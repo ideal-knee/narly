@@ -37,21 +37,23 @@
 (define-infix-operator >)
 (define-infix-operator >=)
 
-(define-narly-macro declare-var (typed-var &KEY |init| |length|)
-  (COND ((AND |length| |init|)
-         `(narly-render (:separator " = ")
-           (narly-render ()
+(define-narly-macro declare-var (typed-var &KEY |init| |length| |external?|)
+  (LET ((context (IF |external?| "extern ~a" "~a")))
+    (COND ((AND |length| |init|)
+           `(narly-render (:context ,context :separator " = ")
+             (narly-render ()
+               (typed-name ,typed-var)
+               (narly-render (:context "[~a]") ,|length|) )
+             (narly-render (:context "{~a}" :separator ", ") ,@|init|) ) )
+          (|init|
+           `(narly-render (:context ,context :separator " = ") (typed-name ,typed-var) ,|init|) )
+          (|length|
+           `(narly-render (:context ,context)
              (typed-name ,typed-var)
-             (narly-render (:context "[~a]") ,|length|) )
-           (narly-render (:context "{~a}" :separator ", ") ,@|init|) ) )
-        (|init|
-         `(narly-render (:separator " = ") (typed-name ,typed-var) ,|init|) )
-        (|length|
-         `(narly-render ()
-           (typed-name ,typed-var)
-           (narly-render (:context "[~a]") ,|length|) ) )
-        (T
-         `(typed-name ,typed-var) ) ) )
+             (narly-render (:context "[~a]") ,|length|) ) )
+          (T
+           `(narly-render (:context ,context)
+             (typed-name ,typed-var) ) ) ) ) )
 
 (define-narly-macro declare-global-var (&REST args)
   `(narly-render (:context "~a;~%") (declare-var ,@args)) )
