@@ -4,12 +4,13 @@
 
 (def max-line 1000)
 
+(declare-global-var (int max) :init 0) ; Just to demonstrate a global var
+
 (declare-fn (int my-getline) ((char* line) (int maxline)))
 (declare-fn (void copy) ((char* to) (char* from)))
 
 (defn (int main) ()
   (declare-var (int len))
-  (declare-var (int max) :init 0)
   (declare-var (char    line) :length max-line)
   (declare-var (char longest) :length max-line)
 
