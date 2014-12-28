@@ -1,0 +1,54 @@
+;; Type size test
+
+;; Results on my system
+;; 
+;;     $ cc --version
+;;     Apple LLVM version 6.0 (clang-600.0.56) (based on LLVM 3.5svn)
+;;     Target: x86_64-apple-darwin14.0.0
+;;     Thread model: posix
+;;     
+;;     $ gen/type-size-test
+;;     sizeof(char): 1
+;;     sizeof(short int): 2
+;;     sizeof(int): 4
+;;     sizeof(long int): 8
+;;     sizeof(float): 4
+;;     sizeof(double): 8
+;;     sizeof(long double): 16
+
+(c-include stdio)
+
+(define-narly-macro make-type-size-test ()
+  (LET ((vars '(;; (char a short) ; Invalid on my system
+                (char b)
+                ;; (char c long) ; Invalid on my system
+                (int d short)
+                (int e)
+                (int f long)
+                ;; (float g short) ; Invalid on my system
+                (float h)
+                ;; (float i long) ; Invalid on my system
+                ;; (double j short) ; Invalid on my system
+                (double k)
+                (double l long) )))
+    `(narly-render (:separator ";~%")
+      (narly-render (:separator ";~%"
+                     :mapping ((var)
+                               (DESTRUCTURING-BIND (type name &REST qualifiers) var
+                                 `(declare-var ,type ,name :qualifiers ,qualifiers) ) ) )
+        ,@vars )
+      (narly-render (:separator ";~%"
+                     :mapping ((var)
+                               (DESTRUCTURING-BIND (type name &REST qualifiers) var
+                                 `(printf ,(FORMAT NIL "sizeof(~a~a~a): %lu\\n"
+                                                   (STRING-JOIN qualifiers " ")
+                                                   (IF qualifiers " " "")
+                                                   type )
+                                          (sizeof ,name) ) ) ) )
+        ,@vars ) ) ) )
+                                                           
+
+(defn (int main) ()
+  (make-type-size-test)
+
+  (return 0) )
