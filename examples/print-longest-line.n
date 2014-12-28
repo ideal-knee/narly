@@ -4,27 +4,28 @@
 
 (def max-line 1000)
 
-(declare-global-var (int max) :init 0) ; Just to demonstrate a global var
+(declare-global-var (char line) :length max-line) ; Just to demonstrate a global var
 
-(declare-fn (int my-getline) ((char* line) (int maxline)))
-(declare-fn (void copy) ((char* to) (char* from)))
+(declare-fn (int my-getline) ((int maxline)))
+(declare-fn (void copy) ((char* to)))
 
 (defn (int main) ()
   (declare-var (int len))
-  (declare-var (char    line) :length max-line)
+  (declare-var (int max) :init 0)
   (declare-var (char longest) :length max-line)
 
-  (while (> (set len (my-getline line max-line)) 0)
+  (while (> (set len (my-getline max-line)) 0)
     (when (> len max)
       (set max len)
-      (copy longest line) ) )
+      (copy longest) ) )
 
   (when (> max 0)
     (printf "%s\\n" longest) )
 
   (return 0) )
 
-(defn (int my-getline) ((char* line) (int maxline))
+(defn (int my-getline) ((int maxline))
+  (declare-var (char line) :length || :external? true)
   (declare-var (int c))
   (declare-var (int i))
 
@@ -43,8 +44,9 @@
 
   (return i) )
 
-(defn (void copy) ((char* to) (char* from))
+(defn (void copy) ((char* to))
+  (declare-var (char line) :length || :external? true)
   (declare-var (int i) :init 0)
 
-  (while (!= (set (aref to i) (aref from i)) 0)
+  (while (!= (set (aref to i) (aref line i)) 0)
     (inc i) ) )
