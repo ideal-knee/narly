@@ -36,33 +36,38 @@
 }
 
 @test "allows variable declaration" {
-    result="$(echo '(declare-var (int count))' | sbcl --script src/cli.lisp)"
+    result="$(echo '(declare-var int count)' | sbcl --script src/cli.lisp)"
     [ "$result" == "int count" ]
 }
 
 @test "allows variable declaration with initial value" {
-    result="$(echo '(declare-var (int count) :init 0)' | sbcl --script src/cli.lisp)"
-    [ "$result" == "int count = 0" ]
+    result="$(echo '(declare-var int count :init 0)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "int count=0" ]
 }
 
 @test "allows array declaration" {
-    result="$(echo '(declare-var (int count) :length 5)' | sbcl --script src/cli.lisp)"
+    result="$(echo '(declare-var int count :length 5)' | sbcl --script src/cli.lisp)"
     [ "$result" == "int count[5]" ]
 }
 
+@test "allows array declaration without explicit length" {
+    result="$(echo '(declare-var int count :array? true)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "int count[]" ]
+}
+
 @test "allows external variable declaration" {
-    result="$(echo '(declare-var (int count) :external? true)' | sbcl --script src/cli.lisp)"
+    result="$(echo '(declare-var int count :external? true)' | sbcl --script src/cli.lisp)"
     [ "$result" == "extern int count" ]
 }
 
 @test "allows global variable declaration" {
-    result="$(echo '(declare-global-var (int count))' | sbcl --script src/cli.lisp)"
+    result="$(echo '(declare-global-var int count)' | sbcl --script src/cli.lisp)"
     [ "$result" == "int count;" ]
 }
 
 @test "allows array declaration with initial value" {
-    result="$(echo '(declare-var (int count) :length 5 :init (1 2 3 4 5))' | sbcl --script src/cli.lisp)"
-    [ "$result" == "int count[5] = {1, 2, 3, 4, 5}" ]
+    result="$(echo '(declare-var int count :length 5 :init (1 2 3 4 5))' | sbcl --script src/cli.lisp)"
+    [ "$result" == "int count[5]={1, 2, 3, 4, 5}" ]
 }
 
 @test "allows variable assignment" {

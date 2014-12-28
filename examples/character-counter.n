@@ -1,13 +1,13 @@
 ;; Character type counter
 
 (define-narly-macro declare-ints (&REST names)
-  `(narly-render (:separator ";~%" :mapping ((name) `(declare-var (int ,name)))) ,@names) )
+  `(narly-render (:separator ";~%" :mapping ((name) `(declare-var int ,name))) ,@names) )
 
 (c-include stdio)
 
 (defn (int main) ()
   (declare-ints c i nwhite nother)
-  (declare-var (int ndigit) :length 10 :init (0 0 0 0 0 0 0 0 0 0))
+  (declare-var int ndigit :length 10 :init (0 0 0 0 0 0 0 0 0 0))
   (set nwhite nother 0)
 
   (while (!= (set c (getchar)) EOF)
