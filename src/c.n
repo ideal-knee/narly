@@ -4,7 +4,11 @@
   `(narly-render (:context "#include \"~a.h\"~%") ,file-basename) )
 
 (define-narly-macro typed-name (typed-name)
-  `(narly-render (:separator " ") ,@typed-name) )
+  (DESTRUCTURING-BIND (type name &KEY array? qualifiers) typed-name
+    `(narly-render (:separator " ")
+      ,@qualifiers
+      ,type
+      (narly-render () ,name ,(IF array? '|[]| '||)) ) ) )
 
 (define-narly-macro body (&REST statements)
   `(narly-render (:context "{~%  ~a;~%}~%" :separator";~%  ") ,@statements) )
@@ -37,10 +41,10 @@
 (define-infix-operator >)
 (define-infix-operator >=)
 
-(define-narly-macro declare-var (type name &KEY |init| |array?| |length| |external?|)
+(define-narly-macro declare-var (type name &KEY init array? length external? qualifiers)
   `(narly-render ()
     ,(IF external? '|extern | '||)
-    (typed-name (,type ,name))
+    (typed-name (,type ,name :qualifiers ,qualifiers))
     ,(COND (length `(narly-render (:context "[~a]") ,length))
            (array? '[])
            (T      '||) )

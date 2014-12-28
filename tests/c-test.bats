@@ -10,6 +10,11 @@
     [ "$result" == "int foo_count" ]
 }
 
+@test "allows array typed names" {
+    result="$(echo '(typed-name (int foo-count :array? true))' | sbcl --script src/cli.lisp)"
+    [ "$result" == "int foo_count[]" ]
+}
+
 @test "supports bodies" {
     result="$(echo '(body (foo bar) (qux bar baz))' | sbcl --script src/cli.lisp)"
     [ "$result" == $'{\n  foo(bar);\n  qux(bar, baz);\n}' ]
@@ -58,6 +63,21 @@
 @test "allows external variable declaration" {
     result="$(echo '(declare-var int count :external? true)' | sbcl --script src/cli.lisp)"
     [ "$result" == "extern int count" ]
+}
+
+@test "allows signed variable declaration" {
+    result="$(echo '(declare-var int count :qualifiers (signed))' | sbcl --script src/cli.lisp)"
+    [ "$result" == "signed int count" ]
+}
+
+@test "allows short variable declaration" {
+    result="$(echo '(declare-var int count :qualifiers (short))' | sbcl --script src/cli.lisp)"
+    [ "$result" == "short int count" ]
+}
+
+@test "allows multiple qualifiers on variable declaration" {
+    result="$(echo '(declare-var int count :qualifiers (unsigned long))' | sbcl --script src/cli.lisp)"
+    [ "$result" == "unsigned long int count" ]
 }
 
 @test "allows global variable declaration" {
