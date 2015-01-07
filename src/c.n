@@ -114,3 +114,11 @@
 
 (define-narly-macro constant (value terminal-characters)
   `(narly-render () ,value ,terminal-characters) )
+
+(define-narly-macro enum (name &REST values)
+  `(narly-render (:context ,(FORMAT NIL "enum ~a { ~~a };" name)
+                  :separator ", "
+                  :mapping ((value) (IF (ATOM value)
+                                      value
+                                      `(narly-render (:separator " = ") ,@value) )) )
+    ,@values ) )

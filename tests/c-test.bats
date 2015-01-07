@@ -169,3 +169,8 @@
     result="$(echo '(constant #x123 ul)' | sbcl --script src/cli.lisp)"
     [ "$result" == "291ul" ]
 }
+
+@test "support enumerations" {
+    result="$(echo '(enum foo bar (baz 3) qux)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "enum foo { bar, baz = 3, qux };" ]
+}
