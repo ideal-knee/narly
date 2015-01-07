@@ -111,3 +111,6 @@
   `(narly-render ()
     ,name
     (narly-render (:context "[~a]") ,index) ) )
+
+(define-narly-macro constant (value terminal-characters)
+  `(narly-render () ,value ,terminal-characters) )

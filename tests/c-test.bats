@@ -164,3 +164,8 @@
     result="$(echo '(aref foo 12)' | sbcl --script src/cli.lisp)"
     [ "$result" == "foo[12]" ]
 }
+
+@test "support octal and hexidecimal constants with terminal characters" {
+    result="$(echo '(constant #x123 ul)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "291ul" ]
+}

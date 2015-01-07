@@ -59,3 +59,30 @@
     result="$(echo '#\Tab' | sbcl --script src/cli.lisp)"
     [ "$result" == "'\t'" ]
 }
+
+@test "supports constants with terminal characters" {
+    result="$(echo '123ul' | sbcl --script src/cli.lisp)"
+    [ "$result" == "123ul" ]
+}
+
+@test "supports floats with decimals" {
+    result="$(echo '1.23' | sbcl --script src/cli.lisp)"
+    [ "$result" == "1.23" ]
+}
+
+@test "supports simple floats with exponent" {
+    result="$(echo '1.2e-2' | sbcl --script src/cli.lisp)"
+    [ "$result" == "0.012" ]
+}
+
+@test "supports more complex floats with exponent" {
+    result="$(echo '-1.23e-5' | sbcl --script src/cli.lisp)"
+    echo $result
+    [ "$result" == "-1.23e-5" ]
+}
+
+@test "supports Common Lisp syntax for octal and hexadecimal literals" {
+    result="$(echo '31 #o37 #x1F' | sbcl --script src/cli.lisp)"
+    echo $result
+    [ "$result" == "313131" ]
+}
