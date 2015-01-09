@@ -70,6 +70,11 @@
     [ "$result" == "signed int count" ]
 }
 
+@test "allows const variable declaration" {
+    result="$(echo '(declare-var int count :qualifiers (const))' | sbcl --script src/cli.lisp)"
+    [ "$result" == "const int count" ]
+}
+
 @test "allows short variable declaration" {
     result="$(echo '(declare-var int count :qualifiers (short))' | sbcl --script src/cli.lisp)"
     [ "$result" == "short int count" ]
