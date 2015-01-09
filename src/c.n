@@ -34,6 +34,8 @@
 (define-infix-operator -)
 (define-infix-operator *)
 (define-infix-operator /)
+(define-infix-operator %)
+
 (define-infix-operator ==)
 (define-infix-operator !=)
 (define-infix-operator <)
@@ -122,3 +124,6 @@
                                       value
                                       `(narly-render (:separator " = ") ,@value) )) )
     ,@values ) )
+
+(define-narly-macro not (expression)
+  `(narly-render (:context "!~a") ,expression) )

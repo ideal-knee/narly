@@ -179,3 +179,8 @@
     result="$(echo '(enum foo bar (baz 3) qux)' | sbcl --script src/cli.lisp)"
     [ "$result" == "enum foo { bar, baz = 3, qux };" ]
 }
+
+@test "supports not operator" {
+    result="$(echo '(not foo)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "!foo" ]
+}
