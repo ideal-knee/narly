@@ -127,3 +127,8 @@
 
 (define-narly-macro not (expression)
   `(narly-render (:context "!~a") ,expression) )
+
+(define-narly-macro cast (expression type)
+  `(narly-render (:separator " ")
+    (narly-render (:context "(~a)") ,type)
+    ,expression ) )

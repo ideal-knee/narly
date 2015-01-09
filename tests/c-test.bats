@@ -184,3 +184,8 @@
     result="$(echo '(not foo)' | sbcl --script src/cli.lisp)"
     [ "$result" == "!foo" ]
 }
+
+@test "supports cast" {
+    result="$(echo '(cast foo int*)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "(int*) foo" ]
+}
