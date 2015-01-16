@@ -26,8 +26,8 @@
      ,@typed-arguments )
     (body ,@statements) ) )
 
-(define-narly-macro define-infix-operator (symbol)
-  `(define-narly-macro ,symbol (&REST args)
+(define-narly-macro define-infix-operator (symbol &OPTIONAL name)
+  `(define-narly-macro ,(OR name symbol) (&REST args)
      `(narly-render (:context "(~a)" :separator ,',(FORMAT NIL ")~a(" symbol)) ,@args) ) )
 
 (define-infix-operator +)
@@ -42,6 +42,15 @@
 (define-infix-operator <=)
 (define-infix-operator >)
 (define-infix-operator >=)
+
+(define-infix-operator && and)
+(define-infix-operator |\|\|| or)
+
+(define-infix-operator & bit-and)
+(define-infix-operator |\|| bit-or)
+(define-infix-operator ^ bit-xor)
+(define-infix-operator << bit-shift-left)
+(define-infix-operator >> bit-shift-right)
 
 (define-narly-macro declare-var (type name &KEY init array? length external? qualifiers)
   `(narly-render ()
@@ -91,12 +100,6 @@
 (define-narly-macro dec-after (name)
   `(narly-render (:context "(~a)--") ,name) )
 
-(define-narly-macro and (&REST args)
-  `(narly-render (:context "(~a)" :separator "&&") ,@args) )
-
-(define-narly-macro or (&REST args)
-  `(narly-render (:context "(~a)" :separator "||") ,@args) )
-
 (define-narly-macro when (test &REST statements)
   `(narly-render (:separator " ")
     if
@@ -132,3 +135,6 @@
   `(narly-render (:separator " ")
     (narly-render (:context "(~a)") ,type)
     ,expression ) )
+
+(define-narly-macro bit-complement (expression)
+  `(narly-render (:context "~~~a") ,expression) )

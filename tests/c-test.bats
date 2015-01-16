@@ -137,12 +137,42 @@
 
 @test "supports and operator" {
     result="$(echo '(and a b)' | sbcl --script src/cli.lisp)"
-    [ "$result" == "(a&&b)" ]
+    [ "$result" == "(a)&&(b)" ]
 }
 
 @test "supports or operator" {
     result="$(echo '(or a b)' | sbcl --script src/cli.lisp)"
-    [ "$result" == "(a||b)" ]
+    [ "$result" == "(a)||(b)" ]
+}
+
+@test "supports bitwise and operator" {
+    result="$(echo '(bit-and a b)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "(a)&(b)" ]
+}
+
+@test "supports bitwise or operator" {
+    result="$(echo '(bit-or a b)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "(a)|(b)" ]
+}
+
+@test "supports bitwise xor operator" {
+    result="$(echo '(bit-xor a b)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "(a)^(b)" ]
+}
+
+@test "supports bitwise left shift operator" {
+    result="$(echo '(bit-shift-left a b)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "(a)<<(b)" ]
+}
+
+@test "supports bitwise right shift operator" {
+    result="$(echo '(bit-shift-right a b)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "(a)>>(b)" ]
+}
+
+@test "supports bitwise complement operator" {
+    result="$(echo '(bit-complement a)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "~a" ]
 }
 
 @test "supports when" {
