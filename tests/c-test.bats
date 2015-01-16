@@ -219,3 +219,8 @@
     result="$(echo '(cast foo int*)' | sbcl --script src/cli.lisp)"
     [ "$result" == "(int*) foo" ]
 }
+
+@test "supports addition assignment operator" {
+    result="$(echo '(set-add a b)' | sbcl --script src/cli.lisp)"
+    [ "$result" == "a += b" ]
+}

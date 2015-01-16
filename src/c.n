@@ -138,3 +138,18 @@
 
 (define-narly-macro bit-complement (expression)
   `(narly-render (:context "~~~a") ,expression) )
+
+(define-narly-macro define-assignement-operator (name symbol)
+  `(define-narly-macro ,name (&REST args)
+     `(narly-render (:separator ,',(FORMAT NIL " ~a= " symbol)) ,@args) ) )
+
+(define-assignement-operator set-add +)
+(define-assignement-operator set-sub -)
+(define-assignement-operator set-mul *)
+(define-assignement-operator set-div /)
+(define-assignement-operator set-mod %)
+(define-assignement-operator set-lsh <<)
+(define-assignement-operator set-rsh >>)
+(define-assignement-operator set-and &)
+(define-assignement-operator set-or  |\||)
+(define-assignement-operator set-xor ^)
