@@ -1,0 +1,17 @@
+;; Count 1 bits in x
+
+(c-include stdio)
+
+(defn (int bitcount) ((int x :qualifiers (unsigned)))
+  (declare-var int b)
+
+  (for ((set b 0) (!= x 0) (set-rsh x 1))
+    (when (bit-and x 1)
+      (inc b) ) )
+
+  (return b) )
+
+(defn (int main) ()
+  (printf "%i\\n" (bitcount 123))
+
+  (return 0) )

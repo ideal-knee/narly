@@ -41,3 +41,10 @@
     result="$(echo $'foo\nbarbar\nqux\nquux' | gen/print-longest-line)"
     [ "$result" == "barbar" ]
 }
+
+@test "builds bitcount correctly" {
+    cat examples/bitcount.n | sbcl --script src/cli.lisp > gen/bitcount.c
+    cc gen/bitcount.c -o gen/bitcount
+    result="$(gen/bitcount)"
+    [ "$result" == "6" ]
+}
