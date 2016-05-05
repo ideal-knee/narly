@@ -1,5 +1,7 @@
 ;; Count 1 bits in x
 
+(narly-include "src/c")
+
 (c-include stdio)
 
 (defn (int bitcount) ((int x :qualifiers (unsigned)))

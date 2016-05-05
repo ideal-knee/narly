@@ -1,12 +1,12 @@
 ;; Type size test
 
 ;; Results on my system
-;; 
+;;
 ;;     $ cc --version
 ;;     Apple LLVM version 6.0 (clang-600.0.56) (based on LLVM 3.5svn)
 ;;     Target: x86_64-apple-darwin14.0.0
 ;;     Thread model: posix
-;;     
+;;
 ;;     $ gen/type-size-test
 ;;     sizeof(char): 1
 ;;     sizeof(short int): 2
@@ -17,6 +17,8 @@
 ;;     sizeof(long double): 16
 
 (c-include stdio)
+
+(narly-include "src/c")
 
 (define-narly-macro make-type-size-test ()
   (LET ((vars '(;; (char a short) ; Invalid on my system
@@ -46,7 +48,7 @@
                                                    type )
                                           (sizeof ,name) ) ) ) )
         ,@vars ) ) ) )
-                                                           
+
 
 (defn (int main) ()
   (make-type-size-test)

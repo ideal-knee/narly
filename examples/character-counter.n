@@ -1,5 +1,7 @@
 ;; Character type counter
 
+(narly-include "src/c")
+
 (define-narly-macro declare-ints (&REST names)
   `(narly-render (:separator ";~%" :mapping ((name) `(declare-var int ,name))) ,@names) )
 

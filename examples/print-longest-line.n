@@ -1,5 +1,7 @@
 ;; Scan through a file then print the longest line
 
+(narly-include "src/c")
+
 (c-include stdio)
 
 (def max-line 1000)

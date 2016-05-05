@@ -4,7 +4,7 @@ default :
 	make hello-world
 
 hello-world :
-	cat examples/hello.n | sbcl --script src/cli.lisp > gen/hello.c
+	cat examples/hello.n | sbcl --script src/c-cli.lisp > gen/hello.c
 	cc gen/hello.c -o gen/hello
 	gen/hello
 

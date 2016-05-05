@@ -1,5 +1,7 @@
 ;; Pipe standard in to standard out
 
+(narly-include "src/c")
+
 (c-include stdio)
 
 (defn (int main) ()

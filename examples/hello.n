@@ -1,5 +1,7 @@
 ;; hello world
 
+(narly-include "src/c")
+
 (c-include stdio)
 
 (defn (int main) ((int argc) (char** argv))

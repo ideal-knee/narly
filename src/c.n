@@ -1,5 +1,8 @@
 ;; C core
 
+(define-naive-function-call (fn &REST args)
+  `(narly-render (:context ,(FORMAT NIL "~a(~~a)" (NARLY-EVAL fn)) :separator ", ") ,@args) )
+
 (define-narly-macro c-include (file-basename)
   `(narly-render (:context "#include \"~a.h\"~%") ,file-basename) )
 

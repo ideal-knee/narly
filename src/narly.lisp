@@ -5,6 +5,8 @@
 
 (defvar *narly-macros* ())
 
+(defvar *narly-naive-function-call* nil)
+
 (defun string-join (elements delimiter)
   (format nil (format nil "~~{~~a~~^~a~~}" delimiter) elements) )
 
@@ -45,6 +47,11 @@
        (push `(,name . ,arguments-and-body) *narly-macros*) )
      "" )
 
+    ;; Naive function call definition
+    ((eq (first form) '|define-naive-function-call|)
+     (setq *narly-naive-function-call* (rest form))
+     "" )
+
     ;; Macro call
     ((assoc (first form) *narly-macros*)
      (destructuring-bind (arguments &rest body)
@@ -53,16 +60,16 @@
                             ,@body ))) ) )
 
     ;; Naive function call
-    ;; ?? Default case--could hide errors...
-    ;; ?? Only works for languages with C-like function call syntax
-    (t (format nil "~a(~a)"
-               (narly-eval (first form))
-               (string-join (mapcar #'narly-eval (rest form)) ", ") )) ) )
+    (t
+     (if (null *narly-naive-function-call*)
+       (error "No naive function call defined.") )
+
+     (destructuring-bind (arguments &rest body) *narly-naive-function-call*
+       (narly-eval (eval `(destructuring-bind ,arguments ',form
+                            ,@body ))) ) ) ) )
 
 (defun narly (in-stream)
   (let ((*readtable* *narly-readtable*))
     (do ((form (read in-stream nil 'eof) (read in-stream nil 'eof)))
 	((eql form 'eof) "")
       (format t "~a" (narly-eval form)) ) ) )
-
-(narly (open "src/c.n"))

@@ -1,5 +1,7 @@
 ;; Print temperature conversion table
 
+(narly-include "src/c")
+
 (c-include stdio)
 
 (def lower   0)

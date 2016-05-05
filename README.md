@@ -10,7 +10,7 @@ compile time.
 Usage
 -----
 
-    cat your-narly-source-file.n | sbcl --script src/cli.lisp > your-c-source-file.c
+    cat your-narly-source-file.n | sbcl --script src/c-cli.lisp > your-c-source-file.c
 
 Should work fine with any ANSI-compliant Common Lisp, though figuring
 out the exact incantation to get the functionality of the SBCL
