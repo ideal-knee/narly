@@ -26,8 +26,8 @@
 }
 
 @test "transforms s-expressions into C-like function calls" {
-    result="$(echo '(foo-corge bar baz qux)' | sbcl --script src/c-cli.lisp)"
-    [ "$result" == "foo_corge(bar, baz, qux)" ]
+    result="$(echo '(foo-corge bar baz qux-grault)' | sbcl --script src/c-cli.lisp)"
+    [ "$result" == "foo_corge(bar, baz, qux_grault)" ]
 }
 
 @test "renders forms with default context and separator" {
